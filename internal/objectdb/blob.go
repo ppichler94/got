@@ -12,6 +12,10 @@ type Blob struct {
 	data    string
 }
 
+func (b *Blob) PrettyPrint() string {
+	return b.Content
+}
+
 func NewBlob(content string) *Blob {
 	blob := &Blob{Content: content}
 	blob.header = fmt.Sprintf("blob %d\000", len(content))
@@ -27,8 +31,4 @@ func (b *Blob) Write() error {
 		return err
 	}
 	return nil
-}
-
-func Read(hash string) (interface{}, error) {
-	return Blob{}, nil
 }
