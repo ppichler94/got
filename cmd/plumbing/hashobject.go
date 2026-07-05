@@ -1,4 +1,4 @@
-package cmd
+package plumbing
 
 import (
 	"bufio"
@@ -10,23 +10,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type hashobjectFlags struct {
+var hashObjectFlags struct {
 	stdin bool
 	write bool
 }
 
-var hashObjectFlags hashobjectFlags
-
 func init() {
-	rootCmd.AddCommand(hashobjectCmd)
-
 	hashobjectCmd.Flags().BoolVar(&hashObjectFlags.stdin, "stdin", false, "Read from stdin")
 	hashobjectCmd.Flags().BoolVarP(&hashObjectFlags.write, "write", "w", false, "Write to the database")
 }
 
 var hashobjectCmd = &cobra.Command{
-	Use:   "hash-object",
-	Short: "Compute the object ID and optionally store it in the database.",
+	Use:     "hash-object",
+	Short:   "Compute the object ID and optionally store it in the database.",
+	GroupID: groupId,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var input string
 		var err error
@@ -38,6 +35,14 @@ var hashobjectCmd = &cobra.Command{
 					return err
 				}
 			}
+		}
+
+		if len(args) > 0 {
+			content, err := os.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+			input = string(content)
 		}
 
 		blob := objectdb.NewBlob(input)

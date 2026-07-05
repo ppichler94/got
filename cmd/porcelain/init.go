@@ -1,4 +1,4 @@
-package cmd
+package porcelain
 
 import (
 	"path/filepath"
@@ -7,14 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(initCmd)
-}
-
 var initCmd = &cobra.Command{
-	Use:   "init [<directory>]",
-	Short: "Initialize a new, empty repository",
-	Args:  cobra.MaximumNArgs(1),
+	Use:     "init [<directory>]",
+	Short:   "Initialize a new, empty repository",
+	GroupID: groupId,
+	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		dir := "./"
 		if len(args) > 0 {

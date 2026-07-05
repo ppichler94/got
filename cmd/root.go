@@ -4,12 +4,19 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ppichler94/got/cmd/plumbing"
+	"github.com/ppichler94/got/cmd/porcelain"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "got",
 	Short: "A git implementation in Go",
+}
+
+func init() {
+	porcelain.InitCmds(rootCmd)
+	plumbing.InitCmds(rootCmd)
 }
 
 func Execute() {
